@@ -47,14 +47,15 @@ module Reek
       #   @option map [Array] :excluded_paths list of paths to exclude from analysis
       #     for instance:
       #       [ Pathname('spec/samples/two_smelly_files') ]
-      # @overload from_map(map)
+      # @overload from_map(hash)
       #   @public
       #   Loads the configuration from a hash of the form that is loaded from a
       #   +.reek+ config file.
-      #   @param [Hash] map The configuration hash to load.
+      #   @param [Hash] hash The configuration hash to load.
       #
       # @return [AppConfiguration]
       #
+      # @public
       def self.from_map(map = {})
         allocate.tap do |instance|
           instance.instance_eval do
