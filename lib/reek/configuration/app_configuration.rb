@@ -9,8 +9,9 @@ require_relative './excluded_paths'
 module Reek
   module Configuration
     #
-    # Reek's singleton configuration instance.
+    # Reek's application configuration.
     #
+    # @public
     class AppConfiguration
       include ConfigurationValidator
       EXCLUDE_PATHS_KEY = 'exclude_paths'
@@ -21,6 +22,8 @@ module Reek
       # @param path [Pathname] the path to the config file
       #
       # @return [AppConfiguration]
+      #
+      # @public
       def self.from_path(path = nil)
         allocate.tap do |instance|
           instance.instance_eval { find_and_load(path: path) }
@@ -39,6 +42,8 @@ module Reek
       #   [ Pathname('spec/samples/two_smelly_files') ]
       #
       # @return [AppConfiguration]
+      #
+      # @public
       def self.from_map(map = {})
         allocate.tap do |instance|
           instance.instance_eval do
