@@ -82,38 +82,16 @@ You can now use either
 Reek::Configuration::AppConfiguration.from_path Pathname.new('config.reek')
 ```
 
-but you can also pass a hash via `Reek::Configuration::AppConfiguration.from_map`.
+but you can also pass a hash with the contents of the `config.reek` YAML file
+to `Reek::Configuration::AppConfiguration.from_map`.
 
-This hash can have the following 3 keys:
-
-1.) directory_directives [Hash] for instance:
-
-```Ruby
-  { Pathname("spec/samples/three_clean_files/") =>
-    { Reek::Smells::UtilityFunction => { "enabled" => false } } }
-```
-
-2.) default_directive [Hash] for instance:
-
-```Ruby
-  { Reek::Smells::IrresponsibleModule => { "enabled" => false } }
-```
-
-3.) excluded_paths [Array] for instance:
-
-```Ruby
-  [ Pathname('spec/samples/two_smelly_files') ]
-```
-
-Given the example above you should load that as "default directive" which means that it will
-be the default configuration for smell types for which there is
-no "directory directive" (so a directory-specific configuration):
+Given the example above you should load that as follows:
 
 ```Ruby
 require 'reek'
 
-default_directive = { Reek::Smells::IrresponsibleModule => { 'enabled' => false } }
-configuration = Reek::Configuration::AppConfiguration.from_map default_directive: default_directive
+config_hash = { 'IrresponsibleModule' => { 'enabled' => false } }
+configuration = Reek::Configuration::AppConfiguration.from_map config_hash
 
 source = <<-EOS
   class Dirty
@@ -129,13 +107,20 @@ reporter.add_examiner examiner; nil
 reporter.show
 ```
 
-This would now only report the `UncommunicativeParameterName` but not the `IrresponsibleModule`
-for the `Dirty` class:
+This would now only report `UncommunicativeParameterName` but not
+`IrresponsibleModule` for the `Dirty` class:
 
 ```
 string -- 2 warnings:
   Dirty#call_me has the parameter name 'a' (UncommunicativeParameterName)
   Dirty#call_me has the parameter name 'b' (UncommunicativeParameterName)
+```
+
+Instead of the smell detector names you can also use the full detector class in
+your configuration hash, for example:
+
+```ruby
+config_hash = { Reek::Smells::IrresponsibleModule => { 'enabled' => false } }
 ```
 
 ## Accessing the smell warnings directly
