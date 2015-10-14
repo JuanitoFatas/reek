@@ -83,7 +83,7 @@ Reek::Configuration::AppConfiguration.from_path Pathname.new('config.reek')
 ```
 
 but you can also pass a hash with the contents of the `config.reek` YAML file
-to `Reek::Configuration::AppConfiguration.from_map`.
+to `Reek::Configuration::AppConfiguration.from_hash`.
 
 Given the example above you should load that as follows:
 
@@ -91,7 +91,7 @@ Given the example above you should load that as follows:
 require 'reek'
 
 config_hash = { 'IrresponsibleModule' => { 'enabled' => false } }
-configuration = Reek::Configuration::AppConfiguration.from_map config_hash
+configuration = Reek::Configuration::AppConfiguration.from_hash config_hash
 
 source = <<-EOS
   class Dirty
