@@ -52,6 +52,12 @@ RSpec.describe Reek::Configuration::AppConfiguration do
          'spec/samples/source_with_non_ruby_files']
       end
 
+      let(:combined_value) do
+        directory_directives_value.
+          merge(default_directive_value).
+          merge('exclude_paths' => exclude_paths_value)
+      end
+
       it 'properly sets the configuration from simple data structures' do
         config = described_class.from_map(directory_directives: directory_directives_value,
                                           default_directive: default_directive_value,
@@ -66,6 +72,14 @@ RSpec.describe Reek::Configuration::AppConfiguration do
         config = described_class.from_map(directory_directives: expected_directory_directives,
                                           default_directive: expected_default_directive,
                                           excluded_paths: expected_excluded_paths)
+
+        expect(config.send(:excluded_paths)).to eq(expected_excluded_paths)
+        expect(config.send(:default_directive)).to eq(expected_default_directive)
+        expect(config.send(:directory_directives)).to eq(expected_directory_directives)
+      end
+
+      it 'properly sets the configuration a unified simple data structures' do
+        config = described_class.from_map(combined_value)
 
         expect(config.send(:excluded_paths)).to eq(expected_excluded_paths)
         expect(config.send(:default_directive)).to eq(expected_default_directive)

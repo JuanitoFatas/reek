@@ -45,6 +45,7 @@ module Reek
             load_values map.fetch(:directory_directives, {})
             load_values map.fetch(:default_directive, {})
             load_values EXCLUDE_PATHS_KEY => map.fetch(:excluded_paths, [])
+            load_values map.except(:directory_directives, :default_directive, :excluded_paths)
           end
         end
       end
